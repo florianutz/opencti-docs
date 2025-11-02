@@ -7,6 +7,7 @@ Note that the data deleted by an active retention policy will not appear in the 
 ## Configuration
 
 Retention rules can be configured in the "Settings > Customization > Retention policies" window. A set of parameters must be configured:
+
 - Scope: Define which data are concerned by the retention rule. The 3 possible scopes are: Knowledge, File, Workbench.
 - Maximum retention days: Set the maximum number of days an object can remain unchanged before being eligible for deletion.
 - Filters (for Knowledge scope only): Define filters based on specific criteria to select the types of objects subject to retention rules.
@@ -16,6 +17,7 @@ Retention rules can be configured in the "Settings > Customization > Retention p
 ## Scopes
 
 There are 3 possible scopes for a retention rule:
+
 - **Knowledge**: The rule concerns all the entities of the platform. Users can define filters to target specific objects. Any object respecting the specified filters and that haven't been updated within the duration set in 'maximum retention days' will be permanently deleted.
 
 

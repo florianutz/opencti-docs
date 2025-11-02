@@ -58,7 +58,7 @@ More information can be found [here](../usage/notifications.md).
 
 The ingestion manager in OpenCTI is a component that manages the ingestion of data from RSS, TAXII and CSV feeds.
 
-More information can be found [here](../usage/import-automated.md).
+More information can be found [here](../usage/getting-started.md).
 
 ## Playbook manager
 
@@ -77,7 +77,9 @@ More information can be found [here](../administration/file-indexing.md).
 
 The indicator decay manager allows to update indicators score automatically based on configured decay rules.
 
-More information can be found [here](../administration/decay-rules.md).
+More information can be found:
+- [Decay rule configuration](../administration/decay-rules.md).
+- [Indicator lifecycle](../usage/indicators-lifecycle.md).
 
 ## Trash manager
 

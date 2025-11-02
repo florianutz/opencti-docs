@@ -47,6 +47,8 @@ Here are the configuration keys, for both containers (environment variables) and
 | app:admin:password           | APP__ADMIN__PASSWORD            | ChangeMe              | Default password of the admin user                                                                                                           |
 | app:admin:token              | APP__ADMIN__TOKEN               | ChangeMe              | Default token (must be a valid UUIDv4)                                                                                                       |
 | app:health_access_key        | APP__HEALTH_ACCESS_KEY          | ChangeMe              | Access key for the `/health` endpoint. Must be changed - will not respond to default value. Access with `/health?health_access_key=ChangeMe` |
+| app:auth_payload_body_size   | APP__AUTH_PAYLOAD_BODY_SIZE          |                       | Maximum payload body size for SSO/SAML. Controls the Express body-parser `limit` setting (defaults to 100kb). See https://expressjs.com/en/resources/middleware/body-parser.html                                                                                          |
+
 
 #### Network and security
 
@@ -173,6 +175,8 @@ Here are the configuration keys, for both containers (environment variables) and
 | redis:hostnames            | REDIS__HOSTNAMES            |               | Hostnames definition for Redis cluster or sentinel mode: a list of host:port objects. |
 | redis:port                 | REDIS__PORT                 | 6379          | Port of the Redis Server                                                              |
 | redis:sentinel_master_name | REDIS__SENTINEL_MASTER_NAME |               | Name of your Redis Sentinel Master (mandatory in sentinel mode)                       |
+| redis:sentinel_username    | REDIS__SENTINEL_USERNAME    |               | Username to authenticate on Redis Sentinel                                            |
+| redis:sentinel_password    | REDIS__SENTINEL_PASSWORD    |               | Password to authenticate on Redis Sentinel                                            |
 | redis:use_ssl              | REDIS__USE_SSL              | `false`       | Is the Redis Server has TLS enabled                                                   |
 | redis:username             | REDIS__USERNAME             |               | Username of the Redis Server                                                          |
 | redis:password             | REDIS__PASSWORD             |               | Password of the Redis Server                                                          |
@@ -186,9 +190,11 @@ Here are the configuration keys, for both containers (environment variables) and
 |:--------------------------------------------|:----------------------------------|:--------------|:--------------------------------------------|
 | rabbitmq:hostname                           | RABBITMQ__HOSTNAME                | localhost     | Hostname of the RabbitMQ server             |
 | rabbitmq:port                               | RABBITMQ__PORT                    | 5672          | Port of the RabbitMQ server                 |
+| rabbitmq:hostname_management                | RABBITMQ__HOSTNAME_MANAGEMENT     |               | Hostname of the RabbitMQ Management Plugin  |
 | rabbitmq:port_management                    | RABBITMQ__PORT_MANAGEMENT         | 15672         | Port of the RabbitMQ Management Plugin      |
 | rabbitmq:username                           | RABBITMQ__USERNAME                | guest         | RabbitMQ user                               |
 | rabbitmq:password                           | RABBITMQ__PASSWORD                | guest         | RabbitMQ password                           |
+| rabbitmq:vhost                              | RABBITMQ__VHOST                   | "/"           | RabbitMQ virtual host                       |
 | rabbitmq:queue_type                         | RABBITMQ__QUEUE_TYPE              | "classic"     | RabbitMQ Queue Type ("classic" or "quorum") |
 | -                                           | -                                 | -             | -                                           |
 | rabbitmq:use_ssl                            | RABBITMQ__USE_SSL                 | `false`       | Use TLS connection                          |
@@ -234,7 +240,7 @@ Here are the configuration keys, for both containers (environment variables) and
 
      - Use the Filigran AI Service leveraging our custom AI model using the token given by the support team.
      - Use OpenAI, MistralAI or AzureAI cloud endpoints using your own tokens.
-     - Deploy or use local AI endpoints (Filigran can provide you with the custom model).
+     - Deploy or use local AI endpoints.
 
 | Parameter              | Environment variable        | Default value | Description                                                                   |
 |:-----------------------|:----------------------------|:--------------|:------------------------------------------------------------------------------|
@@ -449,6 +455,12 @@ Can be configured manually using the configuration file `config.yml` or through 
 | Parameter                      | Environment variable           | Default value | Description                                                |
 |:-------------------------------|:-------------------------------|:--------------|:-----------------------------------------------------------|
 | worker:log_level               | WORKER_LOG_LEVEL               | info          | The log level (error, warning, info or debug)              |
+
+#### Technical
+
+| Parameter               | Environment variable           | Default value | Description                                                                                                                                                              |
+|:------------------------|:-------------------------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| worker:objects_max_refs | WORKER_OBJECTS_MAX_REFS               | 0             | The refs amount threshold: if set to a value higher than 0, all objects that have a number of refs higher than this will be sent to a dead letter queue and not ingested |
 
 #### Telemetry
 

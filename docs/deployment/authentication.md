@@ -79,6 +79,30 @@ If you would like to use LDAP groups to automatically associate LDAP groups and 
 }
 ```
 
+### Base URL Configuration (Important for all SSO strategies)
+
+When configuring any SSO authentication provider (SAML, OpenID, Auth0, etc.), the application may need to know the external base URL to fallback on it as default on some use cases.
+
+You need to set the `base_url` parameter to your actual OpenCTI URL, either via environment variable or configuration file.
+
+Option 1 - Environment variable
+
+```yaml
+APP__BASE_URL=<your OpenCTI url>
+```
+
+Option 2 - Configuration file
+
+```json
+{
+  "app": {
+    "base_url": "<your OpenCTI url>/"
+  }
+}
+```
+> ⚠️ Make sure the URL ends with a / and matches the domain exposed to your users.
+
+
 ### SAML (button)
 
 This strategy can be used to authenticate your user with your company SAML and is based on [Passport - SAML](http://www.passportjs.org/packages/passport-saml).
@@ -127,6 +151,7 @@ Here is an example of SAML configuration using environment variables:
 - PROVIDERS__SAML__CONFIG__ISSUER=mydomain
 - PROVIDERS__SAML__CONFIG__ENTRY_POINT=https://auth.mydomain.com/auth/realms/mydomain/protocol/saml
 - PROVIDERS__SAML__CONFIG__SAML_CALLBACK_URL=http://opencti.mydomain.com/auth/saml/callback
+- PROVIDERS__SAML__CONFIG__AUDIENCE=http://opencti.mydomain.com/auth/saml/callback
 - PROVIDERS__SAML__CONFIG__CERT=MIICmzCCAYMCBgF3Rt3X1zANBgkqhkiG9w0BAQsFADARMQ8w
 - PROVIDERS__SAML__CONFIG__LOGOUT_REMOTE=false
 - PROVIDERS__SAML__CONFIG__WANT_AUTHN_RESPONSE_SIGNED=true
@@ -233,13 +258,13 @@ By default, the claims are mapped based on the content of the JWT `access_token`
 
 ```yaml
 - PROVIDERS__OPENID__CONFIG__GROUPS_MANAGEMENT__TOKEN_REFERENCE=id_token
-- PROVIDERS__OPENID__CONFIG__ORGANISATIONS_MANAGEMENT__TOKEN_REFERENCE=id_token
+- PROVIDERS__OPENID__CONFIG__ORGANIZATIONS_MANAGEMENT__TOKEN_REFERENCE=id_token
 ```
 
 Alternatively, you can request OpenCTI to use claims from the `userinfo` endpoint instead of a JWT.
 ```yaml
 - PROVIDERS__OPENID__CONFIG__GROUPS_MANAGEMENT__READ_USERINFO=true
-- PROVIDERS__OPENID__CONFIG__ORGANISATIONS_MANAGEMENT__READ_USERINFO=true
+- PROVIDERS__OPENID__CONFIG__ORGANIZATIONS_MANAGEMENT__READ_USERINFO=true
 ```
 #### Custom/Self-Signed CA Certificates
 
@@ -311,7 +336,8 @@ This strategy allows to use [Auth0 Service](https://auth0.com) to handle the aut
         "domain": "mycompany.eu.auth0.com",
         "audience": "XXXXXXXXXXXXXXX",
         "scope": "openid email profile XXXXXXXXXXXXXXX",
-        "logout_remote": false
+        "logout_remote": true,
+        "logout_uri": "https://opencti.mydomain.com/oidc/logout",
     }
 }
 ```
@@ -326,7 +352,9 @@ Here is an example of Auth0 configuration using environment variables:
 - PROVIDERS__AUTHZERO__CONFIG__CALLBACK_URL=${AUTH0_CALLBACK_URL}
 - PROVIDERS__AUTHZERO__CONFIG__DOMAIN=${AUTH0_DOMAIN}
 - "PROVIDERS__AUTHZERO__CONFIG__SCOPE=openid email profile"
-- PROVIDERS__AUTHZERO__CONFIG__LOGOUT_REMOTE=false
+- PROVIDERS__AUTHZERO__CONFIG__LOGOUT_REMOTE=true
+#LOGOUT_URI can be set when logout_remote = true
+- PROVIDERS__AUTHZERO__CONFIG__LOGOUT_URI="https://opencti.mydomain.com/oidc/logout"
 ```
 
 ### Facebook (button)
